@@ -1240,8 +1240,10 @@ const buildJobs = buildItems.map((rawBuildItem) => {
             cargoBuildReleaseStep,
             {
               // Run a minimal check to ensure that binary is not corrupted, regardless
-              // of our build mode
+              // of our build mode. Release builds are intentionally omitted on
+              // non-denoland forks unless they use the Linux sysroot lane.
               name: "Check deno binary",
+              if: isDebug.or(isDenoland).or(buildItem.use_sysroot),
               run:
                 `target/${buildItem.profile}/deno eval "console.log(1+2)" | grep 3`,
               env: { NO_COLOR: 1 },
