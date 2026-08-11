@@ -1203,11 +1203,9 @@ const buildJobs = buildItems.map((rawBuildItem) => {
               uses: boringCacheAction,
               with: {
                 "cli-version": "v1.18.1",
-                // Normal pull requests are restore-only. The benchmark fork
-                // can publish from its own trusted branches to seed and rerun
-                // a cold/warm proof without granting writes to external forks.
-                "trust-policy":
-                  "${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && 'publish' || 'auto' }}",
+                // Pull requests restore only; trusted main-branch runs publish.
+                // This keeps write credentials out of contributor-controlled CI.
+                "trust-policy": "auto",
                 setup: "none",
                 mode: "cargo",
                 "fail-on-cache-error": true,
@@ -1217,7 +1215,7 @@ const buildJobs = buildItems.map((rawBuildItem) => {
                 BORINGCACHE_RESTORE_TOKEN:
                   "${{ secrets.BORINGCACHE_RESTORE_TOKEN }}",
                 BORINGCACHE_SAVE_TOKEN:
-                  "${{ (github.event_name != 'pull_request' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == 'true' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '' }}",
+                  "${{ github.event_name != 'pull_request' && secrets.BORINGCACHE_SAVE_TOKEN || '' }}",
                 CARGO_PROFILE_DEV_DEBUG: 0,
               },
             }),

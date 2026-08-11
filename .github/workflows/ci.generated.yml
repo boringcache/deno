@@ -390,11 +390,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
@@ -1351,11 +1351,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
@@ -2513,11 +2513,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
@@ -3568,11 +3568,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
@@ -5518,11 +5518,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
@@ -6144,11 +6144,11 @@ jobs:
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
-          BORINGCACHE_SAVE_TOKEN: '${{ (github.event_name != ''pull_request'' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
+          BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
           cli-version: v1.18.1
-          trust-policy: '${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == ''true'' && github.event_name == ''pull_request'' && github.event.pull_request.head.repo.full_name == github.repository && ''publish'' || ''auto'' }}'
+          trust-policy: auto
           setup: none
           mode: cargo
           fail-on-cache-error: true
