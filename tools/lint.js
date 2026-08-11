@@ -816,6 +816,7 @@ async function ensureNoNewTopLevelEntries() {
   // Keep the root of the repository clean.
   const allowed = new Set([
     ".cargo",
+    ".boringcache.toml",
     ".claude",
     ".devcontainer",
     ".github",
