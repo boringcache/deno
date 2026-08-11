@@ -44,6 +44,25 @@ commands.
 ./x napi        # Run NAPI (native addon) tests
 ```
 
+## Optional shared Rust build cache
+
+The repository's `.boringcache.toml` contains the same debug Cargo command used
+by CI. After installing BoringCache and authenticating, keep laptop use
+restore-only by default:
+
+```sh
+boringcache login --manual
+boringcache config set read_only true
+boringcache cargo
+```
+
+The target cache is separated by platform, Rust compiler, and Git context. The
+typed Cargo target archive excludes incremental directories, and the compiler
+cache disables incremental compilation for the wrapped command, which avoids
+publishing a developer machine's accumulated local `target` state. Use
+`boringcache cargo --write` only when you intentionally want to publish the
+current Git-scoped cache.
+
 ## Hot Module Replacement (HMR) mode
 
 While iterating on JavaScript/TypeScript modules it is recommended to include

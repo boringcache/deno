@@ -20,6 +20,11 @@ import {
 // automatically via regex, so ensure that this line maintains this format.
 const cacheVersion = 123;
 
+const boringCacheAction =
+  "boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56"; // v1 / 1.18.1
+const boringCacheEnabled = "env.BORINGCACHE_ENABLED == 'true'";
+const boringCacheDisabled = "env.BORINGCACHE_ENABLED != 'true'";
+
 const ubuntuX86Runner = "ubuntu-24.04";
 const ubuntuARMRunner = "ubuntu-24.04-arm";
 const ubuntuARMXlRunner = "ubuntu-24.04-arm64-xl";
@@ -676,6 +681,10 @@ const buildJobs = buildItems.map((rawBuildItem) => {
     RUST_BACKTRACE: "full",
     // disable anyhow's library backtrace
     RUST_LIB_BACKTRACE: 0,
+    // BoringCache is opt-in so forks and contributors without workspace
+    // credentials keep Deno's existing GitHub Actions cache path.
+    BORINGCACHE_ENABLED:
+      "${{ vars.BORINGCACHE_ENABLED == 'true' && (secrets.BORINGCACHE_RESTORE_TOKEN != '' || (github.event_name != 'pull_request' && secrets.BORINGCACHE_SAVE_TOKEN != '')) && 'true' || 'false' }}",
   };
   const defaults = {
     run: {
@@ -723,6 +732,12 @@ const buildJobs = buildItems.map((rawBuildItem) => {
           ...buildItem,
           cachePrefix: "build-main",
         });
+        const selectedRestoreCacheStep = rawBuildItem.profile === "debug"
+          ? restoreCacheStep.if(boringCacheDisabled)
+          : restoreCacheStep;
+        const selectedSaveCacheStep = rawBuildItem.profile === "debug"
+          ? saveCacheStep.if(boringCacheDisabled)
+          : saveCacheStep;
         const tarSourcePublishStep = step({
           name: "Create source tarballs (release, linux)",
           if: buildItem.os.equals("linux")
@@ -1001,7 +1016,7 @@ const buildJobs = buildItems.map((rawBuildItem) => {
           .dependsOn(
             installLldStep,
             installDenoStep,
-            restoreCacheStep,
+            selectedRestoreCacheStep,
             installRustStep,
             sysRootStep,
           )(
@@ -1171,18 +1186,41 @@ const buildJobs = buildItems.map((rawBuildItem) => {
         const cargoBuildStep = step
           .dependsOn(
             installLldStep,
-            restoreCacheStep,
+            selectedRestoreCacheStep,
             installRustStep,
             sysRootStep,
           )
           .comesAfter(tarSourcePublishStep)(
-            {
-              name: "Build debug",
-              if: isDebug,
+            step.if(isDebug).if(boringCacheDisabled)({
+              name: "Build debug with GitHub Actions cache",
               run:
                 `cargo build --locked ${packagesToBuild} ${binsToBuild} --features=deno/panic-trace`,
               env: { CARGO_PROFILE_DEV_DEBUG: 0 },
-            },
+            }),
+            step.if(isDebug).if(boringCacheEnabled)({
+              id: "boringcache",
+              name: "Build debug with BoringCache",
+              uses: boringCacheAction,
+              with: {
+                "cli-version": "v1.18.1",
+                // Normal pull requests are restore-only. The benchmark fork
+                // can publish from its own trusted branches to seed and rerun
+                // a cold/warm proof without granting writes to external forks.
+                "trust-policy":
+                  "${{ vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == 'true' && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && 'publish' || 'auto' }}",
+                setup: "none",
+                mode: "cargo",
+                "fail-on-cache-error": true,
+                "metadata-hints": `platform=${profileName}`,
+              },
+              env: {
+                BORINGCACHE_RESTORE_TOKEN:
+                  "${{ secrets.BORINGCACHE_RESTORE_TOKEN }}",
+                BORINGCACHE_SAVE_TOKEN:
+                  "${{ (github.event_name != 'pull_request' || (vars.BORINGCACHE_PUBLISH_INTERNAL_PRS == 'true' && github.event.pull_request.head.repo.full_name == github.repository)) && secrets.BORINGCACHE_SAVE_TOKEN || '' }}",
+                CARGO_PROFILE_DEV_DEBUG: 0,
+              },
+            }),
             {
               // The rest of CI only exercises the default v8 backend. Make sure the
               // experimental QuickJS backend (the deno_v8 facade over the v8x crate)
@@ -1220,6 +1258,15 @@ const buildJobs = buildItems.map((rawBuildItem) => {
             denoArtifact.upload(),
             denortArtifact.upload(),
             testServerArtifact.upload(),
+            step.if(isDebug).if(boringCacheEnabled)({
+              name: "Upload BoringCache evidence",
+              uses: "actions/upload-artifact@v6",
+              with: {
+                name: `boringcache-${profileName}`,
+                path: "${{ steps.boringcache.outputs.evidence-path }}",
+                "retention-days": 14,
+              },
+            }),
           );
 
         const shouldPublishCondition = isRelease.and(isDenoland)
@@ -1360,7 +1407,7 @@ const buildJobs = buildItems.map((rawBuildItem) => {
           ),
           cargoBuildStep,
           publishStep,
-          saveCacheStep.if(buildItem.save_cache),
+          selectedSaveCacheStep.if(buildItem.save_cache),
         );
       })(),
     },
