@@ -1,0 +1,45 @@
+workspace = "boringcache/deno"
+
+[proxy]
+metadata-hints = ["project=deno", "workflow=ci"]
+
+[entries.cargo-registry]
+tag = "deno-debug-cargo-registry"
+
+[entries.cargo-git]
+tag = "deno-debug-cargo-git"
+
+[entries.cargo-target]
+kind = "cargo-target"
+tag = "deno-debug-cargo-target"
+path = "target"
+
+[profiles.cargo-debug]
+entries = ["cargo-registry", "cargo-git", "cargo-target"]
+
+[adapters.cargo]
+profiles = ["cargo-debug"]
+compiler-cache = "sccache"
+metadata-hints = ["lane=build-debug"]
+command = [
+  "cargo",
+  "build",
+  "--locked",
+  "-p",
+  "deno",
+  "-p",
+  "denort",
+  "-p",
+  "test_server",
+  "--bin",
+  "deno",
+  "--bin",
+  "denort",
+  "--bin",
+  "test_server",
+  "--features=deno/panic-trace",
+]
+
+[adapters.sccache]
+tag = "deno-debug-rust-compiler"
+metadata-hints = ["lane=build-debug"]
