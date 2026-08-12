@@ -21,7 +21,7 @@ import {
 const cacheVersion = 123;
 
 const boringCacheAction =
-  "boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56"; // v1 / 1.18.1
+  "boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2"; // v1 / 1.19.1
 const boringCacheEnabled = "env.BORINGCACHE_ENABLED == 'true'";
 const boringCacheDisabled = "env.BORINGCACHE_ENABLED != 'true'";
 
@@ -1202,7 +1202,7 @@ const buildJobs = buildItems.map((rawBuildItem) => {
               name: "Build debug with BoringCache",
               uses: boringCacheAction,
               with: {
-                "cli-version": "v1.18.1",
+                "cli-version": "v1.19.1",
                 // Pull requests restore only; trusted main-branch runs publish.
                 // This keeps write credentials out of contributor-controlled CI.
                 "trust-policy": "auto",

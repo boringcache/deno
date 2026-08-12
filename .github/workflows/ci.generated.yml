@@ -386,14 +386,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
@@ -1347,14 +1347,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
@@ -2509,14 +2509,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
@@ -3564,14 +3564,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
@@ -5514,14 +5514,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
@@ -6140,14 +6140,14 @@ jobs:
         run: cargo build --locked -p deno -p denort -p test_server --bin deno --bin denort --bin test_server --features=deno/panic-trace
       - name: Build debug with BoringCache
         id: boringcache
-        uses: boringcache/one@ab52a39d3d7358c22b359a6ffbf86cf74be9bf56
+        uses: boringcache/one@e24257b122813ad11d53b9ed024b474ca4946ad2
         if: env.BORINGCACHE_ENABLED == 'true'
         env:
           BORINGCACHE_RESTORE_TOKEN: '${{ secrets.BORINGCACHE_RESTORE_TOKEN }}'
           BORINGCACHE_SAVE_TOKEN: '${{ github.event_name != ''pull_request'' && secrets.BORINGCACHE_SAVE_TOKEN || '''' }}'
           CARGO_PROFILE_DEV_DEBUG: 0
         with:
-          cli-version: v1.18.1
+          cli-version: v1.19.1
           trust-policy: auto
           setup: none
           mode: cargo
